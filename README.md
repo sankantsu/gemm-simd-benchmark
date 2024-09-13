@@ -46,3 +46,40 @@ make benchmark
 ```
 
 runs benchmark for `dgemm()` and `dgemm_simd()` for square matrices with random double values `[0, 1)`.
+
+## Benchmark Results
+
+### Environment
+
+- CPU: Intel(R) Xeon(R) Gold 6252 CPU @ 2.10GHz
+- OS: Linux 5.15.0-97-generic
+- Compiler: GCC 11.4.0
+
+### Execution time
+
+- Linear plot
+
+![](img/benchmark_result_linear.png)
+
+- Loglog plot
+
+![](img/benchmark_result_loglog.png)
+
+### Speedups (raw)
+
+`dgemm_simd()` speedup over `dgemm()`
+
+```
+Speedup:
+n
+8             inf
+16      10.000000
+32      22.250000
+64      12.419355
+128     13.059441
+256      6.392113
+512      7.856221
+1024     7.158072
+```
+
+For `n = 8`, `dgemm_simd()` execution time was recorded as 0.0, so speedup result is "inf".
