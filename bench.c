@@ -35,15 +35,27 @@ double run(int n, mm f) {
   return elapsed;
 }
 
-void benchmark() {
-  int n = 1024;
-  int n_iter = 20;
-  for (int i = 0; i < n_iter; i++) {
-    double elapsed = run(n, dgemm_simd);
-    printf("%d th: %f sec\n", i, elapsed);
+void print_header() {
+  printf("label,n,iter,sec\n");
+}
+
+void benchmark(char *label, mm f) {
+  int n_min = 8;
+  int n_max = 1024;
+  for (int n = n_min; n <= n_max; n <<= 1) {
+    fprintf(stderr, "Running %s for size %d ...\n", label, n);
+    int n_iter = 20;
+    for (int i = 0; i < n_iter; i++) {
+      double elapsed = run(n, f);
+      printf("%s,%d,%d,%.9f\n", label, n, i, elapsed);
+    }
   }
 }
 
 int main() {
-  benchmark();
+  setbuf(stdout, NULL);  // disable buffer for printf
+
+  print_header();
+  benchmark("dgemm", dgemm);
+  benchmark("dgemm_simd", dgemm_simd);
 }

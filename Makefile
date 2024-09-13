@@ -3,6 +3,7 @@ CFLAGS=-std=c11 -O2 -mavx512f
 
 BIN_DIR=./bin/
 LIB_DIR=./lib/
+OUT_DIR=./out/
 
 SOURCES=dgemm.c dgemm_simd.c
 TEST_SOURCES=test.c
@@ -35,7 +36,8 @@ $(VALIDATE_EXECUTABLE): $(VALIDATE_SOURCES) $(DGEMM_LIB)
 .PHONY: bench test clean
 
 bench: $(BENCH_EXECUTABLE)
-	@LD_LIBRARY_PATH=$(LIB_DIR) $(BENCH_EXECUTABLE)
+	@mkdir -p $(OUT_DIR)
+	@LD_LIBRARY_PATH=$(LIB_DIR) $(BENCH_EXECUTABLE) >$(OUT_DIR)bench_out.csv
 
 validate: $(VALIDATE_EXECUTABLE)
 	@LD_LIBRARY_PATH=$(LIB_DIR) $(VALIDATE_EXECUTABLE)
